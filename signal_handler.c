@@ -4,9 +4,11 @@
  */
 
 /**
- * Modified by:
+ * Modified by: Holly Raetz
  * 
  * Brief summary of modifications:
+ * Program now automatically interrupts itself after 10s.
+ * Program also does not exit upon interrupt.
  */
 
 
@@ -19,12 +21,12 @@
  * @brief Signal handler for SIGINT - prints a message and exits
  */
 void handle_signal() {
-    printf("Received a signal\n");
-    exit(1);
+    printf("Received a signal\n"); //Can still exit using ^\ in cmdline
 }
 
 int main() {
 
+    int count = 10;
     // Register for the signal
     signal(SIGINT, handle_signal);
 
@@ -32,6 +34,11 @@ int main() {
     while(1) {
         printf("Sleeping\n");
         sleep(1);
+        count--;
+        if(count == 0)
+        {
+            kill(0, SIGINT);
+        }
     }
 
     return 0;
